@@ -154,6 +154,9 @@ and master_metadata_track_name is not null;
 
 -- Delete unnecessary/sensitive fields
 alter table pvl_files.pvl_spotify_history
+drop offline,
+drop incognito_mode,
+drop shuffle,
 drop ts,
 drop ms_played,
 drop username,

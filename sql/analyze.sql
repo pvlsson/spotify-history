@@ -12,6 +12,7 @@ group by 1;
 -- Group per Spotify account
 select username_hash, count(*)
 from pvl_spotify_history
+where track_name is not null
 group by 1;
 
 -- Show most listened songs of all time
@@ -37,6 +38,7 @@ with spotify_data as (
     from pvl_spotify_history
     where date_format(listen_date, '%Y') in (2020, 2021, 2022)
         and track_name is not null
+        and played_time >= '00:00:30'
 )
 
 , yearly_listens as (
@@ -77,4 +79,9 @@ select track_name,
        max(case when listen_year = 2022 then yearly_rank else null end) as Year2022
 from total
 group by track_name
-order by Ranking;
+having Year2022 is not null
+order by Year2022;
+
+select incognito_mode, count(*)
+from pvl_spotify_history
+group by 1
